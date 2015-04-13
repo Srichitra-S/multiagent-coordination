@@ -1,4 +1,5 @@
-"""Receives UDP broadcasts from trackbot GPS"""
+"""Receives UDP broadcasts from trackbot GPS
+code from code.activestate.com/recipes/577278-receive-udp-broadcasts/"""
 
 import socket, select
 from sh import nc
