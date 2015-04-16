@@ -1,12 +1,16 @@
-import socket
+"""Receives UDP broadcasts from trackbot GPS"""
 
-UDP_IP = "192.168.50.37"
-UDP_PORT = 61557
+import socket, select
+from sh import nc
 
-sock = socket.socket(socket.AF_INET, # Internet
-                     socket.SOCK_DGRAM) # UDP
-sock.bind((UDP_IP, UDP_PORT))
+UDP_Port = 61557  # port trackbot writes to
+bufferSize = 1024 
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind(('<broadcast>', UDP_Port))
+s.setblocking(0)
 
 while True:
-    data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-    print "received message:", data
+    result = select.select([s],[],[])
+    msg = result[0][0].recv(bufferSize) 
+    print msg
