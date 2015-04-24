@@ -21,4 +21,4 @@ right = ''
 while (left!='-1') and (right!='-1'):
     left = raw_input("left")
     right = raw_input("right")
-    send_udp(left,right)
+
