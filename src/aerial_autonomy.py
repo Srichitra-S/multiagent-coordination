@@ -76,12 +76,6 @@ class QuadcopterBrain(object):
                 else:
                     print("Retrying. Tries: %d" % (tries))
 
-    # def position_callback(self, data):
-    #     self.current_lat = data.latitude
-    #     self.current_long = data.longitude
-    #     self.current_rel_alt = data.relative_altitude
-    #     self.current_alt = data.altitude
-
     def fly_path(self, waypoint_data):
         self.arm()
         self.launch()
@@ -140,20 +134,18 @@ def get_trackbot_gps_coord(wait_for_data=True):
     lon = 0
     
     while wait_for_data:
-        print "waiting for data"
+        print "Waiting for data"
         result = select.select([s],[],[])
         msg = result[0][0].recv(bufferSize) 
         print "GPS msg:", msg
-        # these are a little janky, beware
         # split on commas, indexes 7 and 9
-        lat_index = msg.find("LAT") + 4
-        lat = msg[lat_index:lat_index+8]
-        lon_index = msg.find("LON") + 4
-        lon = msg[lon_index:lon_index+9]
-        if float(lat) > 0 or float(lon) > 0:
+        gps_data = msg.split(',')
+        lat = float(gps_data[7])
+        lon = float(gps_data[9])
+        if lat > 0 or lon > 0:
             wait_for_data = False
 
-    return float(lat), float(lon)
+    return lat, lon
     
 
 def main():
