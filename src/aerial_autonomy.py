@@ -121,7 +121,7 @@ def open_waypoint_file(filename):
     return waypoints
 
 
-def get_trackbot_gps_coord(wait_for_data=True):
+def get_trackbot_gps_coord():
     print "Attempting to get gps from trackbot"
     UDP_Port = 61557  # port trackbot writes to
     bufferSize = 1024 
@@ -132,7 +132,8 @@ def get_trackbot_gps_coord(wait_for_data=True):
 
     lat = 0
     lon = 0
-    
+    wait_for_data=True
+
     while wait_for_data:
         print "Waiting for data"
         result = select.select([s],[],[])
@@ -140,8 +141,8 @@ def get_trackbot_gps_coord(wait_for_data=True):
         print "GPS msg:", msg
         # split on commas, indexes 7 and 9
         gps_data = msg.split(',')
-        lat = float(gps_data[7])
-        lon = float(gps_data[9])
+        lat = float(gps_data[6])
+        lon = float(gps_data[8])
         if lat > 0 or lon > 0:
             wait_for_data = False
 
